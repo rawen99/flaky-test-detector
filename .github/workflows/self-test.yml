@@ -1,0 +1,47 @@
+name: Self-test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  # Run the action against fixture results with KNOWN ground truth
+  # (2 flaky, 1 broken, 1 stable) and assert it reports exactly that.
+  verify-detection:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Run this action against the fixtures
+        id: detector
+        uses: ./
+        with:
+          results-path: test-fixtures
+
+      - name: Assert counts match ground truth
+        run: |
+          test "${{ steps.detector.outputs.flaky-count }}" = "2" || { echo "::error::expected 2 flaky, got ${{ steps.detector.outputs.flaky-count }}"; exit 1; }
+          test "${{ steps.detector.outputs.broken-count }}" = "1" || { echo "::error::expected 1 broken, got ${{ steps.detector.outputs.broken-count }}"; exit 1; }
+          test "${{ steps.detector.outputs.stable-count }}" = "1" || { echo "::error::expected 1 stable, got ${{ steps.detector.outputs.stable-count }}"; exit 1; }
+          echo "Detection matches ground truth."
+
+      - name: Assert classification is correct
+        run: |
+          python - << 'EOF'
+          import json, sys
+          report = json.load(open("flaky-report.json"))
+          by_name = {t["test"]: t for t in report["tests"]}
+          checks = [
+              ("tests.fixture::flaky_timing", "FLAKY", "ASYNC_TIMING"),
+              ("tests.fixture::flaky_port", "FLAKY", "RESOURCE_CONFLICT"),
+              ("tests.fixture::always_broken", "BROKEN", "-"),
+              ("tests.fixture::solid", "STABLE", "-"),
+          ]
+          failed = False
+          for name, verdict, category in checks:
+              t = by_name.get(name)
+              if not t or t["verdict"] != verdict or t["category"] != category:
+                  print(f"::error::{name}: expected {verdict}/{category}, got {t and (t['verdict'], t['category'])}")
+                  failed = True
+          sys.exit(1 if failed else 0)
+          EOF

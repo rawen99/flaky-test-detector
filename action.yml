@@ -1,0 +1,76 @@
+name: 'Flaky Test Detector'
+description: >-
+  Detects flaky tests by comparing JUnit XML results from multiple runs of the
+  same commit, classifies each flaky test by root-cause category, and publishes
+  a diagnosis report to the job summary.
+author: 'Rawen Ahmad'
+branding:
+  icon: 'alert-triangle'
+  color: 'orange'
+
+inputs:
+  results-path:
+    description: >-
+      Directory containing JUnit XML result files from multiple runs of the
+      same commit (searched recursively). Typically the download location of
+      your test-run artifacts.
+    required: true
+  fail-on-flaky:
+    description: 'Fail the job if any flaky tests are detected (true/false).'
+    required: false
+    default: 'false'
+  report-file:
+    description: 'Path to write the Markdown report to.'
+    required: false
+    default: 'flaky-report.md'
+  json-file:
+    description: 'Path to write the raw JSON report to.'
+    required: false
+    default: 'flaky-report.json'
+
+outputs:
+  flaky-count:
+    description: 'Number of flaky tests detected.'
+    value: ${{ steps.analyse.outputs.flaky-count }}
+  broken-count:
+    description: 'Number of consistently failing (non-flaky) tests.'
+    value: ${{ steps.analyse.outputs.broken-count }}
+  stable-count:
+    description: 'Number of stable tests.'
+    value: ${{ steps.analyse.outputs.stable-count }}
+  report-path:
+    description: 'Path of the generated Markdown report.'
+    value: ${{ inputs.report-file }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: '3.11'
+
+    - name: Analyse test results for flakiness
+      id: analyse
+      shell: bash
+      run: |
+        python "${{ github.action_path }}/detect_flaky.py" \
+          "${{ inputs.results-path }}" \
+          --markdown "${{ inputs.report-file }}" \
+          --json "${{ inputs.json-file }}" \
+          --github-outputs "$GITHUB_OUTPUT"
+
+    - name: Publish report to job summary
+      if: always()
+      shell: bash
+      run: |
+        if [ -f "${{ inputs.report-file }}" ]; then
+          cat "${{ inputs.report-file }}" >> "$GITHUB_STEP_SUMMARY"
+        fi
+
+    - name: Fail if flaky tests were found
+      if: inputs.fail-on-flaky == 'true' && steps.analyse.outputs.flaky-count != '0'
+      shell: bash
+      run: |
+        echo "::error::${{ steps.analyse.outputs.flaky-count }} flaky test(s) detected. See the job summary for the diagnosis report."
+        exit 1

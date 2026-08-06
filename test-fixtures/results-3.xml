@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites><testsuite name="pytest" tests="4">
+<testcase classname="tests.fixture" name="flaky_timing" time="0.05"/>
+<testcase classname="tests.fixture" name="flaky_port" time="0.01"><failure message="OSError: Address already in use: 8765">OSError: Address already in use: 8765</failure></testcase>
+<testcase classname="tests.fixture" name="always_broken" time="0.01"><failure message="AssertionError: assert 1 == 2">AssertionError: assert 1 == 2</failure></testcase>
+<testcase classname="tests.fixture" name="solid" time="0.01"/>
+</testsuite></testsuites>
