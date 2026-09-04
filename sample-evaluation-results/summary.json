@@ -1,0 +1,159 @@
+{
+  "runs_per_config": 15,
+  "e1": [
+    {
+      "flake_rate": 0.05,
+      "runs": 15,
+      "precision": 1.0,
+      "recall": 0.5,
+      "f1": 0.667,
+      "classification_accuracy": 1.0,
+      "tp": 3,
+      "fp": 0,
+      "fn": 3
+    },
+    {
+      "flake_rate": 0.1,
+      "runs": 15,
+      "precision": 1.0,
+      "recall": 0.833,
+      "f1": 0.909,
+      "classification_accuracy": 1.0,
+      "tp": 5,
+      "fp": 0,
+      "fn": 1
+    },
+    {
+      "flake_rate": 0.2,
+      "runs": 15,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "classification_accuracy": 1.0,
+      "tp": 6,
+      "fp": 0,
+      "fn": 0
+    },
+    {
+      "flake_rate": 0.3,
+      "runs": 15,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "classification_accuracy": 1.0,
+      "tp": 6,
+      "fp": 0,
+      "fn": 0
+    },
+    {
+      "flake_rate": 0.5,
+      "runs": 15,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "classification_accuracy": 1.0,
+      "tp": 6,
+      "fp": 0,
+      "fn": 0
+    }
+  ],
+  "e2": [
+    {
+      "runs": 2,
+      "recall": 0.333,
+      "detected": 2
+    },
+    {
+      "runs": 3,
+      "recall": 0.5,
+      "detected": 3
+    },
+    {
+      "runs": 4,
+      "recall": 0.5,
+      "detected": 3
+    },
+    {
+      "runs": 5,
+      "recall": 0.5,
+      "detected": 3
+    },
+    {
+      "runs": 6,
+      "recall": 1.0,
+      "detected": 6
+    },
+    {
+      "runs": 7,
+      "recall": 1.0,
+      "detected": 6
+    },
+    {
+      "runs": 8,
+      "recall": 1.0,
+      "detected": 6
+    },
+    {
+      "runs": 9,
+      "recall": 1.0,
+      "detected": 6
+    },
+    {
+      "runs": 10,
+      "recall": 1.0,
+      "detected": 6
+    },
+    {
+      "runs": 11,
+      "recall": 1.0,
+      "detected": 6
+    },
+    {
+      "runs": 12,
+      "recall": 1.0,
+      "detected": 6
+    },
+    {
+      "runs": 13,
+      "recall": 1.0,
+      "detected": 6
+    },
+    {
+      "runs": 14,
+      "recall": 1.0,
+      "detected": 6
+    },
+    {
+      "runs": 15,
+      "recall": 1.0,
+      "detected": 6
+    }
+  ],
+  "e3": [
+    {
+      "threshold": 0.1,
+      "classification_accuracy": 1.0,
+      "f1": 1.0
+    },
+    {
+      "threshold": 0.25,
+      "classification_accuracy": 1.0,
+      "f1": 1.0
+    },
+    {
+      "threshold": 0.5,
+      "classification_accuracy": 1.0,
+      "f1": 1.0
+    },
+    {
+      "threshold": 0.75,
+      "classification_accuracy": 1.0,
+      "f1": 1.0
+    },
+    {
+      "threshold": 1.0,
+      "classification_accuracy": 1.0,
+      "f1": 1.0
+    }
+  ]
+}

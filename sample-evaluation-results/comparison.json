@@ -1,0 +1,49 @@
+{
+  "runs": 20,
+  "results": {
+    "B1 naive (any failure)": {
+      "tp": 6,
+      "fp": 1,
+      "fn": 0,
+      "precision": 0.857,
+      "recall": 1.0,
+      "f1": 0.923,
+      "bugs_mislabelled_as_flaky": 1,
+      "provides_diagnosis": false,
+      "categories_assigned": 0
+    },
+    "B2 rerun-based": {
+      "tp": 6,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "bugs_mislabelled_as_flaky": 0,
+      "provides_diagnosis": false,
+      "categories_assigned": 0
+    },
+    "B3 flip-rate (WithSecure, real tool)": {
+      "tp": 6,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "bugs_mislabelled_as_flaky": 0,
+      "provides_diagnosis": false,
+      "categories_assigned": 0
+    },
+    "D this detector": {
+      "tp": 6,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "bugs_mislabelled_as_flaky": 0,
+      "provides_diagnosis": true,
+      "categories_assigned": 6
+    }
+  }
+}

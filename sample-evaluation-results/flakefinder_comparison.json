@@ -1,0 +1,25 @@
+{
+  "trials": 5,
+  "injected_rate": 0.3,
+  "flakefinder": {
+    "precision": 1.0,
+    "recall": 0.667,
+    "f1": 0.8,
+    "bugs_mislabelled": 0,
+    "missed_counts": {
+      "tests.test_order_dependent::test_order_dependent_consumer": 5,
+      "tests.test_time_dependent::test_time_dependent": 5
+    },
+    "provides_diagnosis": false
+  },
+  "this_detector": {
+    "precision": 1.0,
+    "recall": 0.967,
+    "f1": 0.982,
+    "bugs_mislabelled": 0,
+    "missed_counts": {
+      "tests.test_resource_conflict::test_resource_conflict": 1
+    },
+    "provides_diagnosis": true
+  }
+}
