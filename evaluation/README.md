@@ -89,3 +89,53 @@ published decision rules, not the tools themselves. The published tools differ
 in *how* they trigger reruns, not in how they infer flakiness from outcomes,
 so the comparison is on the inference rule rather than the full tool. B3 is
 the genuine article and is the load-bearing comparison.
+
+## E5 — Head-to-head against pytest-flakefinder
+
+`compare_flakefinder.py` runs this detector against **pytest-flakefinder**
+(PyPI), a real and widely used pytest plugin for flaky-test detection.
+
+It is a more informative comparator than a flip-rate tool because it uses a
+**structurally different detection strategy**:
+
+| | Strategy |
+|---|---|
+| pytest-flakefinder | Repeats each test N times **within a single session**, one process |
+| This detector | Compares outcomes **across N separate sessions**, separate processes |
+
+Both are given the same harness, the same injected failure rate, and the same
+ground truth. Results are averaged over multiple trials because the
+phenomenon under study is non-deterministic.
+
+### Result (5 trials, injected rate 0.30)
+
+| Tool | Precision | Recall | F1 | Bugs mislabelled | Diagnosis |
+|---|---|---|---|---|---|
+| pytest-flakefinder | 1.00 | 0.667 | 0.80 | 0 | no |
+| This detector | 1.00 | 0.967 | 0.982 | 0 | **yes** |
+
+### Why the difference — and it is not an implementation flaw
+
+pytest-flakefinder missed the **order-dependent** test in 5/5 trials, and the
+**time-dependent** test in 5/5 trials. Both are structural consequences of
+intra-session repetition:
+
+- **Order dependency** is invisible to in-session repeats. The polluting or
+  priming test runs once; the repeated test then executes against a stable
+  in-process environment, so its outcome never varies. Detecting it requires
+  varying the *order across sessions*.
+- **Time dependency** is missed because all repeats execute within
+  milliseconds of one another, so the wall-clock boundary that triggers the
+  fault either falls inside every repeat or none of them.
+
+This is a real and reportable finding about the limits of intra-session
+repetition, not a defect in the comparator. It matters in proportion to how
+common those categories are: Luo et al. attribute 12% of flaky tests to order
+dependency, and Lam et al. report 50.5% in the iDFlakies dataset.
+
+### Interpretation
+
+The advantage comes from the **experimental design** (separate sessions with
+randomised ordering), not from a cleverer inference rule. State that plainly:
+against a comparator that also runs separate sessions — such as the flip-rate
+tool in E4 — detection is equivalent, and the differentiator is diagnosis.
