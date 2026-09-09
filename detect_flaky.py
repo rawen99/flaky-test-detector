@@ -400,11 +400,11 @@ def main():
     print()
     print(markdown)
 
-    if args.markdown:
-        with open(args.markdown, "w") as fh:
+        if args.markdown:
+        with open(args.markdown, "w", encoding="utf-8") as fh:
             fh.write(markdown)
     if args.json:
-        with open(args.json, "w") as fh:
+        with open(args.json, "w", encoding="utf-8") as fh:
             json.dump(report, fh, indent=2)
 
     if args.github_outputs:
