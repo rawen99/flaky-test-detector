@@ -393,20 +393,19 @@ def main():
                         help="Exit with code 1 if any flaky tests are found")
     parser.add_argument("--github-outputs",
                         help="Path to a GitHub Actions outputs file to append counts to")
-    args = parser.parse_args()
+       args = parser.parse_args()
 
     report = analyse(args.directory)
     markdown = to_markdown(report)
     print()
     print(markdown)
 
-        if args.markdown:
+    if args.markdown:
         with open(args.markdown, "w", encoding="utf-8") as fh:
             fh.write(markdown)
     if args.json:
         with open(args.json, "w", encoding="utf-8") as fh:
             json.dump(report, fh, indent=2)
-
     if args.github_outputs:
         counts = {
             "flaky-count": sum(1 for t in report["tests"] if t["verdict"] == "FLAKY"),
