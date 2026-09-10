@@ -393,7 +393,7 @@ def main():
                         help="Exit with code 1 if any flaky tests are found")
     parser.add_argument("--github-outputs",
                         help="Path to a GitHub Actions outputs file to append counts to")
-       args = parser.parse_args()
+args = parser.parse_args()
 
     report = analyse(args.directory)
     markdown = to_markdown(report)
