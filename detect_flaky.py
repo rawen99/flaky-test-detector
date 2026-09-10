@@ -341,9 +341,9 @@ def to_markdown(report):
         "",
         f"Analysed **{report['total_runs']} runs** of the same commit.",
         "",
-        f"- ðŸ”´ **{len(flaky)} flaky** (changed outcome across runs)",
-        f"- âŒ **{len(broken)} consistently failing** (real failures, not flakiness)",
-        f"- âœ… **{len(stable)} stable**",
+        f"- 🔴 **{len(flaky)} flaky** (changed outcome across runs)",
+        f"- ❌ **{len(broken)} consistently failing** (real failures, not flakiness)",
+        f"- ✅ **{len(stable)} stable**",
         "",
     ]
 
@@ -362,7 +362,7 @@ def to_markdown(report):
         lines.append("")
         lines += ["### Diagnosis and suggested remediation", ""]
         for t in flaky:
-            lines.append(f"**`{_sanitize(t['test'], 120)}`** â€” {t['category']}")
+            lines.append(f"**`{_sanitize(t['test'], 120)}`** — {t['category']}")
             lines.append(f"> {t['reason']}")
             if t["example_message"]:
                 lines.append(f"> ")
