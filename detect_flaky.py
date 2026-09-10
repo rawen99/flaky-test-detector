@@ -341,9 +341,9 @@ def to_markdown(report):
         "",
         f"Analysed **{report['total_runs']} runs** of the same commit.",
         "",
-        f"- 🔴 **{len(flaky)} flaky** (changed outcome across runs)",
-        f"- ❌ **{len(broken)} consistently failing** (real failures, not flakiness)",
-        f"- ✅ **{len(stable)} stable**",
+        f"- ðŸ”´ **{len(flaky)} flaky** (changed outcome across runs)",
+        f"- âŒ **{len(broken)} consistently failing** (real failures, not flakiness)",
+        f"- âœ… **{len(stable)} stable**",
         "",
     ]
 
@@ -362,7 +362,7 @@ def to_markdown(report):
         lines.append("")
         lines += ["### Diagnosis and suggested remediation", ""]
         for t in flaky:
-            lines.append(f"**`{_sanitize(t['test'], 120)}`** — {t['category']}")
+            lines.append(f"**`{_sanitize(t['test'], 120)}`** â€” {t['category']}")
             lines.append(f"> {t['reason']}")
             if t["example_message"]:
                 lines.append(f"> ")
@@ -393,7 +393,7 @@ def main():
                         help="Exit with code 1 if any flaky tests are found")
     parser.add_argument("--github-outputs",
                         help="Path to a GitHub Actions outputs file to append counts to")
-args = parser.parse_args()
+    args = parser.parse_args()
 
     report = analyse(args.directory)
     markdown = to_markdown(report)
@@ -406,6 +406,7 @@ args = parser.parse_args()
     if args.json:
         with open(args.json, "w", encoding="utf-8") as fh:
             json.dump(report, fh, indent=2)
+
     if args.github_outputs:
         counts = {
             "flaky-count": sum(1 for t in report["tests"] if t["verdict"] == "FLAKY"),
